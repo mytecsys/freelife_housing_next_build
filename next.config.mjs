@@ -1,7 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["images.pexels.com", "images.unsplash.com"],
+    domains: [
+      "images.pexels.com",
+      "images.unsplash.com",
+      "s3-alpha-sig.figma.com",
+      "framerusercontent.com",
+      "im.proptiger.com",
+      "media.discordapp.net",
+    ],
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {

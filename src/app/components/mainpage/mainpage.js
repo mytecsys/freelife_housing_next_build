@@ -27,8 +27,16 @@ import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
 import otherservices from "../mainpage/otherservices.png";
 import Image from "next/image";
 import ImageGallary from "./imageGallary";
+import Testimonial from "./Testimonial";
 
 const Main = () => {
+  const options = ["Buy", "Rent", "Commercial", "PG/Co-Living", "Plots"];
+  const [selectedOption, setSelectedOption] = useState("Buy");
+
+  const handleButtonClick = (option) => {
+    setSelectedOption(option);
+  };
+
   const [selectedCity, setSelectedCity] = useState("");
 
   const indianCities = [
@@ -115,7 +123,7 @@ const Main = () => {
       bedroomtext: "2 Bed Rooms",
       bathroomtext: "4 Bathrooms",
       imgPath:
-        "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
+        "https://s3-alpha-sig.figma.com/img/3439/6530/8acf15d1df495154d0cef2fb7c483ef2?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=CGU7z6Hv8rSQFwZzjVmN4SggzInV-RrjwRezpaJfP83zRbawwgVIV2Apl3g1HM6n6rbGZJQKVPagGqqDiOllNbjeOxjs5KxEs9xbEB2vDS2MpigP1877t0UZn8ElVJmuJMb2Os2QsWX5M3HilAxcEho1uPAYHBigo9kCCMuNDDzq8Ldag4GODjthsV19TvSLvntRXIvnEHRtb~uQ8KrScz0nYZgNfRM0ljQ6R-gPu-rO1773-6jmoWsG6Y4c3G5P-ZgWi-0K6OnUBzfqCzoLRjSGKBNrY9JPTQZHZ6N-ADM9gTID8JgZB4icvpgII4Cjspj8LTvcuimoSm-rNVYllw__",
     },
     {
       range: "₹76.66L - 78.03 L",
@@ -123,7 +131,7 @@ const Main = () => {
       bedroomtext: "2 Bed Rooms",
       bathroomtext: "4 Bathrooms",
       imgPath:
-        "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
+        "https://s3-alpha-sig.figma.com/img/e8fd/e5fc/9124a57e4b99d539251b194060b0fbef?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=TO2zd2GCnZCWusyLkVGQ8~NCrdjwR2BNt4oVNed8knvkMRbkOikfJCv0a96CJvFkItbXrENKuFnyCHAX7JfMXdNmV5ax0R2wmm68CGALCU4r5MyzdxSTr5zT6x0sp4yw2U65wuUHLcNfQkBG2NWtUAbA1DzCojjTLKx4QhXEMsfLVHxjsjr4ChLpp0cM-dUUMDequ7y4yQIPDLPBiNb3lLN68-V2VHojWR9gPzaUQ8BXwf0fyyBPWDxmW828gKmpXOYDL4o8n6w2-4GH9IQqkEJ7W7m5HU77x3-N-S-24rh7F0MQRhvZ2wjkutBCDtbMn52d6x9hW850Wi16oqR8Gw__",
     },
     {
       range: "₹73.66L - 75.03 L",
@@ -131,7 +139,7 @@ const Main = () => {
       bedroomtext: "2 Bed Rooms",
       bathroomtext: "4 Bathrooms",
       imgPath:
-        "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250",
+        "https://s3-alpha-sig.figma.com/img/6ea1/8b1e/78354df91705100cc3ae58905d75a9df?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=A3setrwlPDvUwHG1K5SCW3CoK6NfOPyG9w5xndRjPeywut01xPmaOBfMZcfM7hy-vL24cDRtSAqhIhUAf1IAaeUk97KqR6CSa-2tSA-hC624oXlrwxqT1OqIiFyrQAfwt1rXRJlK1HE46Hi8rGPwaKYho~Ux~YjZV~JTROTQjLSM8Ba1ViOH5Wu6~MNMm910urjI5NHGE~miL0Itub2s0TxJCE4kKx10iCUIf3F81BbfxIAfaUuEEqo9pYXFrj7n0z7fx6W1m7upB6PhWno0E5KQi6Gv1HL0nRQ7wKsAxzj0aRzoXTpADGDi8fsQCcv12ckSY7GJ3g9k93EReR0QwQ__",
     },
     {
       range: "₹73.66L - 75.03 L",
@@ -139,15 +147,7 @@ const Main = () => {
       bedroomtext: "2 Bed Rooms",
       bathroomtext: "4 Bathrooms",
       imgPath:
-        "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250",
-    },
-    {
-      range: "₹73.66L - 75.03 L",
-      location: "Located at Delhi",
-      bedroomtext: "2 Bed Rooms",
-      bathroomtext: "4 Bathrooms",
-      imgPath:
-        "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250",
+        "https://s3-alpha-sig.figma.com/img/1998/6f9a/a820ef59838899c9c87fab4a77e0cc92?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=FGJbdHUZeBd7CHngTouqKYzmvW8WX-XbBjqWuaCrXbt~8F00zDGfZPjzqSUh~y32mZvLbEI9xnvbrH6AQexaIu~UiBE~Sw2VDe62W50L90G5x2imWxDTxAH-i1j3FqJTgTMHE940VNYRPH6vHqAyALJX0xcA3Cprw0vmZUUIaSkP~ayrFqes6bVsuuFk0JmebxG4xzdZQ0C-zdX~~bdKK-MmdWl3jWvssFRGBwdMwSYH1rb9R4vVMP045OpPD8P4H7wJdIDwmhplXhjl1uQK9dkQU4rGC2eVY8ojeWbcw9prhcALPLK-ZoPpmAtMGW3xCCZx-DXQdbqragoryBwJsA__",
     },
   ];
 
@@ -203,19 +203,19 @@ const Main = () => {
   const recentRealstate = [
     {
       imgpath:
-        "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://cdn.discordapp.com/attachments/1100301796913721437/1202506059860942889/Rectangle_39.png?ex=65cdb40a&is=65bb3f0a&hm=f521059e20bb878f415248847f650788dc72390a3353133732d1338366637fc4&",
       title: "Top 10 best appreciating condos in Orlando",
       text: "March 21, 2022",
     },
     {
       imgpath:
-        "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://cdn.discordapp.com/attachments/1100301796913721437/1202506060141699082/Rectangle_41.png?ex=65cdb40a&is=65bb3f0a&hm=da3869d4d81273a499c92a1d2660d1ff30a9f73790a5a3373945395ed2ef5b18&",
       title: "These were the most expensive Orlando hou...",
       text: "March 21, 2022",
     },
     {
       imgpath:
-        "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://cdn.discordapp.com/attachments/1100301796913721437/1202506060422975488/Rectangle_43.png?ex=65cdb40a&is=65bb3f0a&hm=f7c9b4c4a04eda46d91d17e38a31d9f3eee679bcaaaf988073afe65d646e974e&",
       title: "The top 5 most livable Orlando neighbourho...",
       text: "March 21, 2022",
     },
@@ -235,7 +235,7 @@ const Main = () => {
             </Typography>
 
             <Box display="flex" mb={2}>
-              <Button
+              {/* <Button
                 className="mainpagebutton"
                 style={{ background: "#0066ab1a", color: "#0066AB" }}
               >
@@ -244,7 +244,24 @@ const Main = () => {
               <Button className="mainpagebutton">Rent</Button>
               <Button className="mainpagebutton">Commercial</Button>
               <Button className="mainpagebutton">PG/Co-Living</Button>
-              <Button className="mainpagebutton">Plots</Button>
+              <Button className="mainpagebutton">Plots</Button> */}
+              {options.map((option) => (
+                <Button
+                  key={option}
+                  onClick={() => handleButtonClick(option)}
+                  style={{
+                    backgroundColor:
+                      option === selectedOption ? "#0066ab1a" : "white",
+                    color: option === selectedOption ? "#0066AB" : "black",
+
+                    marginRight: "10px",
+                    marginBottom: "10px",
+                    textTransform: "none",
+                  }}
+                >
+                  {option}
+                </Button>
+              ))}
             </Box>
 
             <Box className="outerwrap">
@@ -431,7 +448,7 @@ const Main = () => {
               Explore our recent property here
             </Typography>
           </Box>
-          <Grid item lg={12} className="CarDetails-page" pt={1}>
+          <Grid item lg={12} className="CarDetails-page" mt={3}>
             <Slider {...settings}>
               {imagesMain.map((image, index) => (
                 <Box key={index}>
@@ -442,6 +459,7 @@ const Main = () => {
                         position: "relative",
                         height: "470px",
                         overflow: "hidden",
+                        borderRadius: "4px",
                       }}
                     >
                       <img
@@ -526,7 +544,7 @@ const Main = () => {
             </Slider>
           </Grid>
         </Grid>
-        <Box marginTop={4} style={{ width: "100%" }}>
+        <Box marginTop={8} style={{ width: "100%" }}>
           <Box
             style={{ display: "flex", flexDirection: "column", width: "100%" }}
           >
@@ -586,17 +604,17 @@ const Main = () => {
             </Box>
           </Box>
 
-          <Grid item lg={12} spacing={2} className="CarDetails-page" pt={1}>
+          <Grid item lg={12} spacing={2} className="CarDetails-page" mt={2}>
             <Slider {...bestproperty}>
               {images.map((step, index) => (
-                <Card key={index} style={{ marginRight: "10px" }}>
+                <Card className="slidercards" key={index}>
                   <div>
                     <Box
                       component="img"
                       sx={{
                         height: 170,
                         display: "block",
-                        maxWidth: 400,
+                        maxWidth: 310,
                         overflow: "hidden",
                         width: "100%",
                       }}
@@ -604,7 +622,7 @@ const Main = () => {
                       alt={step.label}
                     />
                     <Box style={{ padding: "10px" }}>
-                      <Typography variant="h6" fontWeight={500}>
+                      <Typography variant="h6" fontWeight={600}>
                         {step.range}
                       </Typography>
                       <Typography variant="p" mt={1}>
@@ -656,10 +674,10 @@ const Main = () => {
             </Box>
           </Box>
 
-          <Grid item lg={12} spacing={2} className="CarDetails-page" pt={1}>
+          <Grid item lg={12} spacing={2} className="CarDetails-page" mt={2}>
             <Slider {...bestproperty}>
               {images.map((step, index) => (
-                <Card key={index} style={{ marginRight: "10px" }}>
+                <Card key={index} className="slidercards">
                   <div>
                     <Box
                       component="img"
@@ -674,7 +692,7 @@ const Main = () => {
                       alt={step.label}
                     />
                     <Box style={{ padding: "10px" }}>
-                      <Typography variant="h6" fontWeight={500}>
+                      <Typography variant="h6" fontWeight={600}>
                         {step.range}
                       </Typography>
                       <Typography variant="p" mt={1}>
@@ -712,7 +730,7 @@ const Main = () => {
           </Grid>
         </Box>
 
-        <Grid container marginTop={"70px"}>
+        <Grid container marginTop={16} marginBottom={8}>
           <Grid item lg={5} md={5} xs={12}>
             <Image
               src={otherservices}
@@ -801,7 +819,7 @@ const Main = () => {
           </Grid>
         </Grid>
 
-        <Box marginTop={4} style={{ width: "100%" }}>
+        <Box marginTop={4} marginBottom={4} style={{ width: "100%" }}>
           <Box
             style={{ display: "flex", flexDirection: "column", width: "100%" }}
           >
@@ -815,7 +833,7 @@ const Main = () => {
             </Box>
           </Box>
 
-          <Grid container spacing={3} marginTop={"20px"}>
+          <Grid container spacing={3} marginTop={"10px"}>
             {FeaturedDevelopers.map((developer, index) => (
               <Grid item xs={12} sm={4} key={index}>
                 <Paper style={{ padding: "30px", textAlign: "center" }}>
@@ -890,7 +908,7 @@ const Main = () => {
           </Grid>
         </Box>
 
-        <Box marginTop={4} style={{ width: "100%" }}>
+        <Box marginTop={8} style={{ width: "100%" }}>
           <Box
             style={{ display: "flex", flexDirection: "column", width: "100%" }}
           >
@@ -903,7 +921,27 @@ const Main = () => {
               </Typography>
             </Box>
           </Box>
-          <Grid container>{/* <ImageGallary /> */}</Grid>
+          <Grid container marginTop={"20px"}>
+            <ImageGallary />
+          </Grid>
+        </Box>
+
+        <Box marginTop={4} style={{ width: "100%" }}>
+          <Box
+            style={{ display: "flex", flexDirection: "column", width: "100%" }}
+          >
+            <Box style={{ display: "flex", flexDirection: "column" }}>
+              <Typography variant="h5" fontWeight={700}>
+                Testimonial
+              </Typography>
+              <Typography color={"#535353"}>
+                Lorem Ipsum is simply dummy text
+              </Typography>
+            </Box>
+          </Box>
+          <Grid container marginTop={"20px"}>
+            <Testimonial />
+          </Grid>
         </Box>
 
         <Box marginTop={4} style={{ width: "100%" }}>
@@ -951,7 +989,7 @@ const Main = () => {
                   <CardActions>
                     <Box style={{ marginTop: "12px", marginLeft: "10px" }}>
                       <Link
-                        href="#"
+                        href="/blogs"
                         style={{
                           textDecoration: "none",
                           color: "#3D3D3D",
@@ -959,7 +997,7 @@ const Main = () => {
                           alignItems: "center",
                         }}
                       >
-                        View
+                        Read more
                         <ArrowForwardIcon
                           style={{
                             marginLeft: "7px",

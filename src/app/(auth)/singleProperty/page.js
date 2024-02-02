@@ -22,6 +22,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ReactPlayer from "react-player";
+import ImageSlider from "./imageslider";
 
 export default function SingleProperty() {
   let videosrc = "../../housevideo.mp4";
@@ -238,7 +239,7 @@ export default function SingleProperty() {
   const imagesMain = [
     {
       imgpath:
-        "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://s3-alpha-sig.figma.com/img/a2de/cd65/0a2b2c38fc6cee91ccd449e9a582c48c?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WbBBafQ9NaUTpoCvEPOJJ1OspAc3Yl1cjwJyAhmyXvU8ona5wuj6hf29lQtRq9zFEaPod5iHL95p64yvGTezJtWMXP~Qi1K0nYM7eSsO4cq~hNLzixERJS-CLcVMkQERFgTUcW2wbnluHBTWGZ3PFCX5Ho~ls3937MOS3~bw28IQkLRQB9r5rTNr0-Yx4wi-qq-HeMDSA8Iok1uNnbP1tdlZEITiVPrMua83uQxMPqV5tFZTDqxIiuivxE5LI14daOU9fxueJz1O0NEA4qD7EXpyCFeZCWNdJ0oIT75quIpeQhGT29fLba7lTYmiDjlAarYwx3VxRLseWoxttyt6PA__",
     },
     {
       imgpath:
@@ -272,11 +273,12 @@ export default function SingleProperty() {
     width: "100%",
     height: "150px",
     cursor: "pointer",
-    border: "2px solid transparent", // Default border style for thumbnails
+    border: "2px solid transparent",
+    borderRadius: "4px",
   };
 
   const selectedThumbnailStyle = {
-    border: "2px solid blue", // Highlight style for selected thumbnail
+    border: "2px solid blue",
   };
 
   return (
@@ -345,46 +347,7 @@ export default function SingleProperty() {
         </Box>
 
         <Box style={{ margin: "20px 0" }}>
-          <Grid container spacing={3}>
-            {/* Main Slider */}
-            <Grid item lg={12} className="CarDetails-page">
-              <Slider {...settings}>
-                {imagesMain.map((image, index) => (
-                  <div key={index}>
-                    <img
-                      src={image.imgpath}
-                      alt={`Slider Image ${index + 1}`}
-                      style={{ width: "100%", height: "400px" }}
-                    />
-                  </div>
-                ))}
-              </Slider>
-            </Grid>
-
-            {/* Thumbnails */}
-            <Grid container item spacing={3} lg={12}>
-              {imagesMain.map((image, index) => (
-                <Grid
-                  item
-                  key={index}
-                  xs={3}
-                  lg={2}
-                  md={2}
-                  onClick={() => handleThumbnailClick(image)}
-                  style={{
-                    ...thumbnailStyle,
-                    ...(selectedImage === image ? selectedThumbnailStyle : {}),
-                  }}
-                >
-                  <img
-                    src={image.imgpath}
-                    alt={`Thumbnail Image ${index + 1}`}
-                    style={thumbnailStyle}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          </Grid>
+          <ImageSlider />
         </Box>
         <Box style={{ marginTop: "40px" }}>
           <Grid container>
@@ -708,7 +671,7 @@ export default function SingleProperty() {
                     >
                       {images.map((step, index) => (
                         <Paper>
-                          <div key={step.label}>
+                          <div key={index}>
                             {Math.abs(activeStep - index) <= 2 ? (
                               <>
                                 <Box

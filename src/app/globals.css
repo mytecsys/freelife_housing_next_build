@@ -118,7 +118,8 @@ a {
 
 .freehousing_button {
   background: linear-gradient(78.28deg, #00a0e3 0%, #0066ab 99.35%) !important;
-  color: "#fff" !important;
+  color: #fff !important;
+  text-transform: none;
 }
 
 .loginRegInput {
@@ -183,4 +184,50 @@ a {
   background-image: url("./components/mainpage/mainpagebackground.png");
   background-size: cover;
   background-position: center;
+}
+.tabsheadings {
+  border: 1px solid #202020;
+  margin-bottom: 10px !important;
+}
+.tabsheadings:active {
+  background-color: #202020;
+}
+.css-9t2kvt-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  color: #fff; /* Replace with your preferred color */
+}
+.MuiTabs-indicator {
+  background-color: #fff;
+}
+.css-iy9vt1-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  color: #fff;
+}
+.outertabs {
+  border: 1px solid black;
+  margin: -32px;
+  background: #fff;
+  position: absolute;
+  right: 9%;
+  height: 380px;
+  width: 550px;
+}
+.review {
+  position: relative;
+  background: rgb(0, 0, 0);
+  height: 350px;
+  width: 400px;
+  top: -27%;
+}
+.filterheadings {
+  font-weight: 600;
+  font-size: 17px;
+  margin-top: 10px;
+}
+.radiobuttons {
+  font-size: 14px !important;
+}
+.buttontext {
+  font-size: 12px !important;
+}
+.slidercards {
+  width: 310px !important;
 }

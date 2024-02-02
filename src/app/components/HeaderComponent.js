@@ -19,6 +19,7 @@ import Button from "@mui/material/Button";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import DiamondOutlinedIcon from "@mui/icons-material/DiamondOutlined";
 import { Avatar, Chip, Container } from "@mui/material";
 
 import avtarimage from "../images/avtar.png";
@@ -52,7 +53,10 @@ function DrawerAppBar(props) {
         <ListItem disablePadding>
           <ListItem sx={{ textAlign: "center" }}>
             <Box>
-              <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
+              <Button
+                startIcon={<FavoriteBorderOutlinedIcon />}
+                sx={{ color: "#3D3D3D", textTransform: "none" }}
+              >
                 Saved
               </Button>
             </Box>
@@ -66,18 +70,30 @@ function DrawerAppBar(props) {
           </ListItem>
         </ListItem>
         <ListItem disablePadding>
-          <ListItem sx={{ textAlign: "center" }}>
-            <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
-              Blogs
-            </Button>
-          </ListItem>
-        </ListItem>
-        <ListItem disablePadding>
-          <Button
-            variant="contained"
-            style={{ width: "200px", textTransform: "none" }}
-          >
+          <Button className="freehousing_button" style={{ width: "200px" }}>
             Add Your Property
+          </Button>
+        </ListItem>
+        <ListItem>
+          <Button
+            startIcon={<MenuOutlinedIcon />}
+            style={{
+              background: "#0066AB1A",
+              borderRadius: "40px",
+              padding: "5px 15px",
+              textTransform: "none",
+            }}
+          >
+            <Avatar
+              src={avtarimage}
+              style={{
+                height: "30px",
+                width: "30px",
+                marginRight: "7px",
+                textTransform: "none",
+              }}
+            />
+            Rupesh
           </Button>
         </ListItem>
         <ListItem>
@@ -135,6 +151,14 @@ function DrawerAppBar(props) {
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             <List style={{ display: "flex" }}>
               <ListItem disablePadding>
+                <Button
+                  className="freehousing_button"
+                  style={{ width: "200px" }}
+                >
+                  <DiamondOutlinedIcon /> Buy Subscription
+                </Button>
+              </ListItem>
+              <ListItem disablePadding>
                 <ListItem sx={{ textAlign: "center" }}>
                   <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
                     Dashboard
@@ -162,8 +186,8 @@ function DrawerAppBar(props) {
               </ListItem>
               <ListItem disablePadding>
                 <Button
-                  variant="contained"
-                  style={{ width: "200px", textTransform: "none" }}
+                  className="freehousing_button"
+                  style={{ width: "200px" }}
                 >
                   Add Your Property
                 </Button>
