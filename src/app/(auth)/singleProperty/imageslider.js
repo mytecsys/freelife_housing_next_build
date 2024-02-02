@@ -92,7 +92,7 @@ function MyComponent() {
                   width: "100%",
                   height: "150px",
                   borderRadius: "4px",
-                  border: selectedImage === image ? "2px solid blue" : "",
+                  border: selectedImage === image ? "2px solid #0467AB" : "",
                 }}
               />
             </Grid>

@@ -19,7 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import Breadcrumb from "../breadcrumbs/breadcrumbs";
+import Breadcrumb from "../../components/breadcrumbs/breadcrumbs";
 import BedroomChildOutlinedIcon from "@mui/icons-material/BedroomChildOutlined";
 import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
 import TocOutlinedIcon from "@mui/icons-material/TocOutlined";

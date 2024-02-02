@@ -345,9 +345,52 @@ export default function SingleProperty() {
             </Box>
           </Box>
         </Box>
+        {/* <ImageSlider /> */}
 
         <Box style={{ margin: "20px 0" }}>
-          <ImageSlider />
+          <Grid container spacing={3}>
+            {/* Main Slider */}
+            <Grid item lg={12} className="CarDetails-page">
+              <Slider {...settings}>
+                {imagesMain.map((image, index) => (
+                  <div key={index}>
+                    <img
+                      src={image.imgpath}
+                      alt={`Slider Image ${index + 1}`}
+                      style={{
+                        width: "100%",
+                        height: "430px",
+                        borderRadius: "4px",
+                      }}
+                    />
+                  </div>
+                ))}
+              </Slider>
+            </Grid>
+            {/* thumbnail slider */}
+            <Grid container item spacing={3} lg={12}>
+              {imagesMain.map((image, index) => (
+                <Grid
+                  item
+                  key={index}
+                  xs={3}
+                  lg={2}
+                  md={2}
+                  onClick={() => handleThumbnailClick(image)}
+                  style={{
+                    ...thumbnailStyle,
+                    ...(selectedImage === image ? selectedThumbnailStyle : {}),
+                  }}
+                >
+                  <img
+                    src={image.imgpath}
+                    alt={`Thumbnail Image ${index + 1}`}
+                    style={thumbnailStyle}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
         </Box>
         <Box style={{ marginTop: "40px" }}>
           <Grid container>
