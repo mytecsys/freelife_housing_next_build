@@ -19,7 +19,6 @@ import Button from "@mui/material/Button";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import DiamondOutlinedIcon from "@mui/icons-material/DiamondOutlined";
 import { Avatar, Chip, Container } from "@mui/material";
 
 import avtarimage from "../images/avtar.png";
@@ -28,7 +27,7 @@ import Image from "next/image";
 
 const drawerWidth = 240;
 
-function DrawerAppBar(props) {
+function HeaderComponent(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -38,86 +37,65 @@ function DrawerAppBar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
-      </Typography>
-      <Divider />
-      <List>
-        <ListItem disablePadding>
-          <ListItem sx={{ textAlign: "center" }}>
-            <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
-              Dashboard
-            </Button>
-          </ListItem>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItem sx={{ textAlign: "center" }}>
-            <Box>
-              <Button
-                startIcon={<FavoriteBorderOutlinedIcon />}
-                sx={{ color: "#3D3D3D", textTransform: "none" }}
-              >
-                Saved
-              </Button>
-            </Box>
-          </ListItem>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItem sx={{ textAlign: "center" }}>
-            <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
-              Blogs
-            </Button>
-          </ListItem>
-        </ListItem>
-        <ListItem disablePadding>
-          <Button className="freehousing_button" style={{ width: "200px" }}>
-            Add Your Property
+      <Box
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h6" sx={{ my: 2 }}>
+          MUI
+        </Typography>
+        <Divider />
+
+        <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
+          Dashboard
+        </Button>
+
+        <Box>
+          <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
+            Saved
           </Button>
-        </ListItem>
-        <ListItem>
-          <Button
-            startIcon={<MenuOutlinedIcon />}
+        </Box>
+        <Box>
+          <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
+            Blogs
+          </Button>
+        </Box>
+        <Box>
+          <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
+            Blogs
+          </Button>
+        </Box>
+        <Button
+          variant="contained"
+          style={{ width: "200px", textTransform: "none" }}
+        >
+          Add Your Property
+        </Button>
+
+        <Button
+          startIcon={<MenuOutlinedIcon />}
+          style={{
+            background: "#0066AB1A",
+            borderRadius: "40px",
+            padding: "5px 15px",
+            textTransform: "none",
+            marginTop: "10px",
+          }}
+        >
+          <Avatar
+            src={avtarimage}
             style={{
-              background: "#0066AB1A",
-              borderRadius: "40px",
-              padding: "5px 15px",
-              textTransform: "none",
+              height: "30px",
+              width: "30px",
+              marginRight: "7px",
             }}
-          >
-            <Avatar
-              src={avtarimage}
-              style={{
-                height: "30px",
-                width: "30px",
-                marginRight: "7px",
-                textTransform: "none",
-              }}
-            />
-            Rupesh
-          </Button>
-        </ListItem>
-        <ListItem>
-          <Button
-            startIcon={<MenuOutlinedIcon />}
-            style={{
-              background: "#0066AB1A",
-              borderRadius: "40px",
-              padding: "5px 15px",
-              textTransform: "none",
-            }}
-          >
-            <Avatar
-              src={avtarimage}
-              style={{
-                height: "30px",
-                width: "30px",
-                marginRight: "7px",
-              }}
-            />
-            Rupesh
-          </Button>
-        </ListItem>
-      </List>
+          />
+          Rupesh
+        </Button>
+      </Box>
     </Box>
   );
 
@@ -148,73 +126,59 @@ function DrawerAppBar(props) {
           >
             <Image src={logo11} />
           </Typography>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <List style={{ display: "flex" }}>
-              <ListItem disablePadding>
-                <Button
-                  className="freehousing_button"
-                  style={{ width: "200px" }}
-                >
-                  <DiamondOutlinedIcon /> Buy Subscription
-                </Button>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItem sx={{ textAlign: "center" }}>
-                  <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
-                    Dashboard
-                  </Button>
-                </ListItem>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItem sx={{ textAlign: "center" }}>
-                  <Box>
-                    <Button
-                      startIcon={<FavoriteBorderOutlinedIcon />}
-                      sx={{ color: "#3D3D3D", textTransform: "none" }}
-                    >
-                      Saved
-                    </Button>
-                  </Box>
-                </ListItem>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItem sx={{ textAlign: "center" }}>
-                  <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
-                    Blogs
-                  </Button>
-                </ListItem>
-              </ListItem>
-              <ListItem disablePadding>
-                <Button
-                  className="freehousing_button"
-                  style={{ width: "200px" }}
-                >
-                  Add Your Property
-                </Button>
-              </ListItem>
-              <ListItem>
-                <Button
-                  startIcon={<MenuOutlinedIcon />}
-                  style={{
-                    background: "#0066AB1A",
-                    borderRadius: "40px",
-                    padding: "5px 15px",
-                    textTransform: "none",
-                  }}
-                >
-                  <Avatar
-                    src={avtarimage}
-                    style={{
-                      height: "30px",
-                      width: "30px",
-                      marginRight: "7px",
-                      textTransform: "none",
-                    }}
-                  />
-                  Rupesh
-                </Button>
-              </ListItem>
-            </List>
+          <Box
+            sx={{
+              display: { xs: "none", sm: "flex" },
+              alignItems: "right",
+              justifyContent: "end",
+            }}
+          >
+            <Box>
+              <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
+                Dashboard
+              </Button>
+            </Box>
+            <Box>
+              <Button
+                startIcon={<FavoriteBorderOutlinedIcon />}
+                sx={{ color: "#3D3D3D", textTransform: "none" }}
+              >
+                Saved
+              </Button>
+            </Box>
+            <Box>
+              <Button sx={{ color: "#3D3D3D", textTransform: "none" }}>
+                Blogs
+              </Button>
+            </Box>
+            <Box style={{ marginRight: "10px" }}>
+              <Button
+                variant="contained"
+                style={{ width: "200px", textTransform: "none" }}
+              >
+                Add Your Property
+              </Button>
+            </Box>
+            <Button
+              startIcon={<MenuOutlinedIcon />}
+              style={{
+                background: "#0066AB1A",
+                borderRadius: "40px",
+                padding: "5px 15px",
+                textTransform: "none",
+              }}
+            >
+              <Avatar
+                src={avtarimage}
+                style={{
+                  height: "30px",
+                  width: "30px",
+                  marginRight: "7px",
+                  textTransform: "none",
+                }}
+              />
+              Rupesh
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>
@@ -242,7 +206,7 @@ function DrawerAppBar(props) {
   );
 }
 
-DrawerAppBar.propTypes = {
+HeaderComponent.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
@@ -250,4 +214,4 @@ DrawerAppBar.propTypes = {
   window: PropTypes.func,
 };
 
-export default DrawerAppBar;
+export default HeaderComponent;

@@ -1,6 +1,5 @@
 "use client";
-import * as React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Grid, Paper, Typography, Container } from "@mui/material";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -22,9 +21,40 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ReactPlayer from "react-player";
-import ImageSlider from "./imageslider";
+import HeaderComponent from "@/app/components/HeaderComponent";
+import FooterComponent from "@/app/components/FooterComponet";
+import backendApi from "@/app/apiconfigurations/helper";
+import { ApiPostMethodWithToken } from "@/app/apiconfigurations/helper";
+import constant from "@/app/apiconfigurations/Constant";
 
 export default function SingleProperty() {
+  // api call single property
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("function trigger");
+
+      try {
+        const token =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JubyI6IjkxMzA1OTE2NDciLCJ1c2VySWQiOiI2NWJkMGVjMjFmMzc3MGI5OTUxNjlkNzgiLCJpYXQiOjE3MDczMDg0NDQsImV4cCI6MTcwNzMxMjA0NH0.AKDsEuUAeezee4NnunQxtueozJHnxf-LJKuNxKYRmo8";
+        const payload = {
+          user_id: "65c0862d904d2961951a99ad",
+          property_id: "65c32fbc068fd4e9909b0920",
+        };
+        console.log("payload", payload);
+
+        const postUrl = `${constant.baseurl}property/singleproperty`; // Replace 'your_api_endpoint_here' with your actual API endpoint
+
+        const response = await ApiPostMethodWithToken(postUrl, payload, token);
+        console.log("response", response);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   let videosrc = "../../housevideo.mp4";
 
   const nearbyData = [
@@ -239,7 +269,7 @@ export default function SingleProperty() {
   const imagesMain = [
     {
       imgpath:
-        "https://s3-alpha-sig.figma.com/img/a2de/cd65/0a2b2c38fc6cee91ccd449e9a582c48c?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WbBBafQ9NaUTpoCvEPOJJ1OspAc3Yl1cjwJyAhmyXvU8ona5wuj6hf29lQtRq9zFEaPod5iHL95p64yvGTezJtWMXP~Qi1K0nYM7eSsO4cq~hNLzixERJS-CLcVMkQERFgTUcW2wbnluHBTWGZ3PFCX5Ho~ls3937MOS3~bw28IQkLRQB9r5rTNr0-Yx4wi-qq-HeMDSA8Iok1uNnbP1tdlZEITiVPrMua83uQxMPqV5tFZTDqxIiuivxE5LI14daOU9fxueJz1O0NEA4qD7EXpyCFeZCWNdJ0oIT75quIpeQhGT29fLba7lTYmiDjlAarYwx3VxRLseWoxttyt6PA__",
+        "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     },
     {
       imgpath:
@@ -273,16 +303,16 @@ export default function SingleProperty() {
     width: "100%",
     height: "150px",
     cursor: "pointer",
-    border: "2px solid transparent",
-    borderRadius: "4px",
+    border: "2px solid transparent", // Default border style for thumbnails
   };
 
   const selectedThumbnailStyle = {
-    border: "2px solid blue",
+    border: "2px solid blue", // Highlight style for selected thumbnail
   };
 
   return (
     <>
+      <HeaderComponent />
       <Box style={{ marginTop: "100px", padding: "30px", color: "#535353" }}>
         <Breadcrumb />
         <Box
@@ -345,7 +375,6 @@ export default function SingleProperty() {
             </Box>
           </Box>
         </Box>
-        {/* <ImageSlider /> */}
 
         <Box style={{ margin: "20px 0" }}>
           <Grid container spacing={3}>
@@ -357,17 +386,14 @@ export default function SingleProperty() {
                     <img
                       src={image.imgpath}
                       alt={`Slider Image ${index + 1}`}
-                      style={{
-                        width: "100%",
-                        height: "430px",
-                        borderRadius: "4px",
-                      }}
+                      style={{ width: "100%", height: "400px" }}
                     />
                   </div>
                 ))}
               </Slider>
             </Grid>
-            {/* thumbnail slider */}
+
+            {/* Thumbnails */}
             <Grid container item spacing={3} lg={12}>
               {imagesMain.map((image, index) => (
                 <Grid
@@ -714,7 +740,7 @@ export default function SingleProperty() {
                     >
                       {images.map((step, index) => (
                         <Paper>
-                          <div key={index}>
+                          <div key={step.label}>
                             {Math.abs(activeStep - index) <= 2 ? (
                               <>
                                 <Box
@@ -814,6 +840,7 @@ export default function SingleProperty() {
           </Grid>
         </Box>
       </Box>
+      <FooterComponent />
     </>
   );
 }

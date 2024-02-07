@@ -25,8 +25,18 @@ import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
 import TocOutlinedIcon from "@mui/icons-material/TocOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import Fab from "@mui/material/Fab";
+import HeaderComponent from "@/app/components/HeaderComponent";
+import FooterComponent from "@/app/components/FooterComponet";
 
 export default function Filter() {
+
+// filter page api
+
+
+
+
+
+
   const options = ["Agent", "Owner", "Builder", "Expert pro agent"];
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -282,6 +292,7 @@ export default function Filter() {
 
   return (
     <>
+      <HeaderComponent />
       <Box style={{ marginTop: "73px", padding: "60px 30px" }}>
         <Grid container spacing={2} style={{ display: "flex" }}>
           <Grid item lg={9} md={9} xs={12}>
@@ -913,6 +924,7 @@ export default function Filter() {
           </Grid>
         </Grid>
       </Box>
+      <FooterComponent />
     </>
   );
 }

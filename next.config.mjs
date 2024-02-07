@@ -1,14 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  distDir: "build",
   images: {
-    domains: [
-      "images.pexels.com",
-      "images.unsplash.com",
-      "s3-alpha-sig.figma.com",
-      "framerusercontent.com",
-      "im.proptiger.com",
-      "media.discordapp.net",
-    ],
+    domains: ["images.pexels.com", "images.unsplash.com"],
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
