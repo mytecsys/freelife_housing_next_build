@@ -187,3 +187,13 @@ a {
 .outerbox {
   width: 310px !important;
 }
+.slick-prev {
+  left: -25px;
+  color: black;
+  background: #393ebf !important;
+  border-radius: 50% !important;
+}
+.slick-next {
+  background: #393ebf !important;
+  border-radius: 50% !important;
+}

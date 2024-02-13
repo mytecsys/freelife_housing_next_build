@@ -26,27 +26,38 @@ import FooterComponent from "@/app/components/FooterComponet";
 import backendApi from "@/app/apiconfigurations/helper";
 import { ApiPostMethodWithToken } from "@/app/apiconfigurations/helper";
 import constant from "@/app/apiconfigurations/Constant";
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
+import CircleIcon from "@mui/icons-material/Circle";
+import { useSearchParams } from "next/navigation";
 
 export default function SingleProperty() {
+  const searchParams = useSearchParams();
+
+  const search = searchParams.get("property_id");
+  console.log("search", search);
+
+  localStorage.getItem("token");
   // api call single property
+
+  const [propertyDetails, setPropertyDetails] = useState([]);
+  console.log("propertyDetails--", propertyDetails);
 
   useEffect(() => {
     const fetchData = async () => {
       console.log("function trigger");
 
       try {
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JubyI6IjkxMzA1OTE2NDciLCJ1c2VySWQiOiI2NWJkMGVjMjFmMzc3MGI5OTUxNjlkNzgiLCJpYXQiOjE3MDczMDg0NDQsImV4cCI6MTcwNzMxMjA0NH0.AKDsEuUAeezee4NnunQxtueozJHnxf-LJKuNxKYRmo8";
+        const token = localStorage.getItem("token");
         const payload = {
-          user_id: "65c0862d904d2961951a99ad",
-          property_id: "65c32fbc068fd4e9909b0920",
+          property_id: search,
         };
         console.log("payload", payload);
 
         const postUrl = `${constant.baseurl}property/singleproperty`; // Replace 'your_api_endpoint_here' with your actual API endpoint
 
         const response = await ApiPostMethodWithToken(postUrl, payload, token);
-        console.log("response", response);
+        setPropertyDetails(response.property_detail || "");
+        console.log("response", response.property_detail);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -54,6 +65,52 @@ export default function SingleProperty() {
 
     fetchData();
   }, []);
+
+  const [buttonText, setButtonText] = useState("I am intreseted");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  const AddLead = async () => {
+    console.log("function trigger");
+
+    try {
+      const token = localStorage.getItem("token");
+      const payload = {
+        user_id: propertyDetails.user_id,
+        property_id: search,
+        owner_id: propertyDetails._id,
+      };
+      console.log("response lead payload", payload);
+
+      const postUrl = `${constant.baseurl}lead/addlead`; // Replace 'your_api_endpoint_here' with your actual API endpoint
+      console.log("response lead url", postUrl);
+
+      const response = await ApiPostMethodWithToken(postUrl, payload, token);
+      setButtonText("Interest Added Successfully");
+      setButtonDisabled(true);
+
+      // setPropertyList(response);
+
+      console.log("response lead generation", response);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  // useEffect(() => {
+  //   AddLead();
+  // });
+
+  const propertyDescription =
+    propertyDetails && propertyDetails.advanceDetails
+      ? propertyDetails.advanceDetails.propertyDescription
+      : "";
+
+  const floorUrl =
+    propertyDetails &&
+    propertyDetails.floorPlanArray &&
+    propertyDetails.floorPlanArray.length > 0
+      ? propertyDetails.floorPlanArray[0]
+      : "";
 
   let videosrc = "../../housevideo.mp4";
 
@@ -259,11 +316,38 @@ export default function SingleProperty() {
   const settings = {
     dots: true,
     infinite: true,
+    arrows: false,
+
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     adaptiveHeight: true,
+    autoPlay: true,
     afterChange: (index) => setSelectedImage(imagesMain[index]), // Update selected image after each slide change
+  };
+
+  const thumbnailSliderSettings = {
+    dots: false,
+    arrows: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6, // Number of thumbnails to show at once
+    slidesToScroll: 1,
+    adaptiveHeight: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4, // Adjust the number of thumbnails for smaller screens
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 3, // Adjust the number of thumbnails for even smaller screens
+        },
+      },
+    ],
   };
 
   const imagesMain = [
@@ -295,9 +379,9 @@ export default function SingleProperty() {
 
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const handleThumbnailClick = (image) => {
-    setSelectedImage(image);
-  };
+  // const handleThumbnailClick = (image) => {
+  //   setSelectedImage(image);
+  // };
 
   const thumbnailStyle = {
     width: "100%",
@@ -309,6 +393,30 @@ export default function SingleProperty() {
   const selectedThumbnailStyle = {
     border: "2px solid blue", // Highlight style for selected thumbnail
   };
+
+  const formatRent = (rent) => {
+    if (rent === undefined || rent === null) {
+      return ""; // Return an empty string or handle it according to your requirement
+    }
+
+    if (rent >= 100000) {
+      // Convert rent to Lakh (L) format
+      return `${(rent / 100000).toFixed(1)}L`;
+    } else if (rent >= 1000) {
+      // Convert rent to Thousand (k) format
+      return `${(rent / 1000).toFixed(0)}k`;
+    } else {
+      return rent.toString();
+    }
+  };
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0); // Initialize selected image index state
+
+  const handleSlideChange = (index) => {
+    setSelectedImageIndex(index); // Update selected image index when a slide changes
+  };
+
+  console.log("Selected image index:", selectedImageIndex);
 
   return (
     <>
@@ -342,7 +450,11 @@ export default function SingleProperty() {
                 fontWeight={700}
                 pb={1}
               >
-                ₹30.66L - 53.03 L
+                ₹
+                {formatRent(
+                  propertyDetails &&
+                    propertyDetails?.propertyDetails?.monthlyRent
+                )}
               </Typography>
             </Box>
             <Box>
@@ -380,41 +492,69 @@ export default function SingleProperty() {
           <Grid container spacing={3}>
             {/* Main Slider */}
             <Grid item lg={12} className="CarDetails-page">
-              <Slider {...settings}>
-                {imagesMain.map((image, index) => (
-                  <div key={index}>
-                    <img
-                      src={image.imgpath}
-                      alt={`Slider Image ${index + 1}`}
-                      style={{ width: "100%", height: "400px" }}
-                    />
-                  </div>
-                ))}
+              <Slider {...settings} afterChange={handleSlideChange}>
+                {propertyDetails &&
+                  propertyDetails?.imageArray?.map((image, index) => (
+                    <Box key={index}>
+                      <img
+                        src={image}
+                        alt={`Slider Image ${index + 1}`}
+                        style={{ width: "100%", height: "450px" }}
+                      />
+                    </Box>
+                  ))}
               </Slider>
             </Grid>
 
             {/* Thumbnails */}
+            {/* <Grid container item spacing={3} lg={12}>
+              {propertyDetails &&
+                propertyDetails?.imageArray?.map((image, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    xs={3}
+                    lg={2}
+                    md={2}
+
+                    // onClick={() => handleThumbnailClick(index)}
+                  >
+                    <img
+                      src={image}
+                      alt={`Thumbnail Image ${index + 1}`}
+                      // style={thumbnailStyle}
+                      style={{
+                        ...thumbnailStyle,
+                        ...(selectedImageIndex === index
+                          ? selectedThumbnailStyle
+                          : {}),
+                      }}
+                    />
+                  </Grid>
+                ))}
+            </Grid> */}
             <Grid container item spacing={3} lg={12}>
-              {imagesMain.map((image, index) => (
-                <Grid
-                  item
-                  key={index}
-                  xs={3}
-                  lg={2}
-                  md={2}
-                  onClick={() => handleThumbnailClick(image)}
-                  style={{
-                    ...thumbnailStyle,
-                    ...(selectedImage === image ? selectedThumbnailStyle : {}),
-                  }}
-                >
-                  <img
-                    src={image.imgpath}
-                    alt={`Thumbnail Image ${index + 1}`}
-                    style={thumbnailStyle}
-                  />
-                </Grid>
-              ))}
+              <Grid item lg={12} className="ThumbnailSlider">
+                <Slider {...thumbnailSliderSettings}>
+                  {propertyDetails &&
+                    propertyDetails?.imageArray?.map((image, index) => (
+                      <Grid item key={index}>
+                        <img
+                          src={image}
+                          alt={`Thumbnail Image ${index + 1}`}
+                          // style={thumbnailStyle}
+                          style={{
+                            ...thumbnailStyle,
+                            ...(selectedImageIndex === index
+                              ? selectedThumbnailStyle
+                              : {}),
+                          }}
+                          // Change slide when thumbnail is clicked
+                        />
+                      </Grid>
+                    ))}
+                </Slider>
+              </Grid>
             </Grid>
           </Grid>
         </Box>
@@ -448,138 +588,343 @@ export default function SingleProperty() {
                       padding: "15px 0 ",
                     }}
                   >
-                    {PropertyDetails.map((detail, index) => (
-                      <div
-                        key={index}
-                        style={{ width: "40%", paddingBottom: "15px" }}
-                      >
-                        <div
-                          style={{
-                            marginRight: "20px",
-                            marginBottom: "5px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              {detail.icon}
-                              <span style={{ marginLeft: "7px" }}>
-                                {detail.text}:
-                              </span>
-                            </div>
-                            <div>{detail.value}</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </Box>
-                </Box>
+                    {propertyDetails && propertyDetails.propertyDetails
+                      ? Object.entries(propertyDetails.propertyDetails).map(
+                          ([key, value]) => {
+                            // Exclude 'id' key
+                            if (key !== "_id") {
+                              // Format the key
+                              const formattedKey = key
+                                .split(/(?=[A-Z])/)
+                                .map(
+                                  (word) =>
+                                    word.charAt(0).toUpperCase() + word.slice(1)
+                                )
+                                .join(" ");
 
-                <Box>
-                  <Typography
-                    variant="h6"
-                    style={{ padding: "15px 0" }}
-                    fontWeight={700}
-                  >
-                    Property utility
-                  </Typography>
-                  <Box
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      marginBottom: "10px",
-                      justifyContent: "space-between",
-                      padding: "15px 0 ",
-                    }}
-                  >
-                    {Propertyutility.map((utility, index) => (
-                      <div
-                        key={index}
-                        style={{ width: "40%", paddingBottom: "15px" }}
-                      >
-                        <div
-                          style={{
-                            marginRight: "20px",
-                            marginBottom: "5px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              {utility.icon}
-                              <span style={{ marginLeft: "7px" }}>
-                                {utility.text}:
-                              </span>
-                            </div>
-                            <div>{utility.value}</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                              // Check if the key is "availableFrom" and value is a valid date string
+                              if (
+                                key === "availableFrom" &&
+                                typeof value === "string" &&
+                                value.match(
+                                  /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/
+                                )
+                              ) {
+                                const formattedDate = new Date(
+                                  value
+                                ).toLocaleDateString();
+                                return (
+                                  <div
+                                    style={{
+                                      width: "40%",
+                                      paddingBottom: "15px",
+                                    }}
+                                    key={key}
+                                  >
+                                    <div
+                                      style={{
+                                        marginRight: "20px",
+                                        marginBottom: "5px",
+                                      }}
+                                    >
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "space-between",
+                                        }}
+                                      >
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                          }}
+                                        >
+                                          <span
+                                            style={{
+                                              marginLeft: "7px",
+                                              display: "flex",
+                                            }}
+                                          >
+                                            <RadioButtonCheckedIcon
+                                              fontSize="small"
+                                              style={{
+                                                marginRight: "10px",
+                                                color: "gray",
+                                              }}
+                                            />
+                                            {formattedKey}:
+                                          </span>
+                                        </div>
+                                        {/* Render the formatted date */}
+                                        <div>{formattedDate}</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              } else if (typeof value !== "object" && value) {
+                                // Render other properties without conversion
+                                return (
+                                  <div
+                                    style={{
+                                      width: "40%",
+                                      paddingBottom: "15px",
+                                    }}
+                                    key={key}
+                                  >
+                                    <div
+                                      style={{
+                                        marginRight: "20px",
+                                        marginBottom: "5px",
+                                      }}
+                                    >
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "space-between",
+                                        }}
+                                      >
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                          }}
+                                        >
+                                          <span
+                                            style={{
+                                              marginLeft: "7px",
+                                              display: "flex",
+                                            }}
+                                          >
+                                            <RadioButtonCheckedIcon
+                                              fontSize="small"
+                                              style={{
+                                                marginRight: "10px",
+                                                color: "gray",
+                                              }}
+                                            />
+                                            {formattedKey}:
+                                          </span>
+                                        </div>
+                                        {/* Render the value */}
+                                        <div>{value}</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              }
+                            }
+                            return null; // Exclude rendering of 'id'
+                          }
+                        )
+                      : ""}
                   </Box>
                 </Box>
+                {propertyDetails &&
+                propertyDetails.advanceDetails &&
+                Object.keys(propertyDetails.advanceDetails)
+                  .filter((key) => key !== "_id") // Exclude _id field
+                  .some((key) => propertyDetails.advanceDetails[key]) ? ( // Check if any field other than _id has a truthy value
+                  <Box>
+                    <Typography
+                      variant="h6"
+                      style={{ padding: "15px 0" }}
+                      fontWeight={700}
+                    >
+                      Property utility
+                    </Typography>
+                    <Box
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        marginBottom: "10px",
+                        justifyContent: "space-between",
+                        padding: "15px 0 ",
+                      }}
+                    >
+                      {propertyDetails && propertyDetails.advanceDetails
+                        ? Object.entries(propertyDetails.advanceDetails).map(
+                            ([key, value], index) => {
+                              // Exclude '_id', 'address', and 'propertyDescription' keys
+                              if (
+                                key !== "_id" &&
+                                key !== "address" &&
+                                key !== "propertyDescription" &&
+                                value // Check if value is truthy
+                              ) {
+                                // Format the key
+                                const formattedKey = key
+                                  .split(/(?=[A-Z])/)
+                                  .map(
+                                    (word) =>
+                                      word.charAt(0).toUpperCase() +
+                                      word.slice(1)
+                                  )
+                                  .join(" ");
 
-                <Box>
-                  <Typography
-                    variant="h6"
-                    style={{ padding: "15px 0" }}
-                    fontWeight={700}
-                  >
-                    Outdor Features
-                  </Typography>
-                  <Box
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      marginBottom: "10px",
-                      justifyContent: "space-between",
-                      padding: "15px 0 ",
-                    }}
-                  >
-                    {OutdorFeatures.map((outdoor, index) => (
-                      <div
-                        key={index}
-                        style={{ width: "40%", paddingBottom: "15px" }}
-                      >
-                        <div
-                          style={{
-                            marginRight: "20px",
-                            marginBottom: "5px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              {outdoor.icon}
-                              <span style={{ marginLeft: "7px" }}>
-                                {outdoor.text}:
-                              </span>
-                            </div>
-                            <div>{outdoor.value}</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                                // Render the property
+                                return (
+                                  <div
+                                    style={{
+                                      width: "40%",
+                                      paddingBottom: "15px",
+                                    }}
+                                    key={index}
+                                  >
+                                    <div
+                                      style={{
+                                        marginRight: "20px",
+                                        marginBottom: "5px",
+                                      }}
+                                    >
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "space-between",
+                                        }}
+                                      >
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                          }}
+                                        >
+                                          <span
+                                            style={{
+                                              marginLeft: "7px",
+                                              display: "flex",
+                                            }}
+                                          >
+                                            <RadioButtonCheckedIcon
+                                              fontSize="small"
+                                              style={{
+                                                marginRight: "10px",
+                                                color: "gray",
+                                              }}
+                                            />{" "}
+                                            {formattedKey}:
+                                          </span>
+                                        </div>
+                                        <div>{value}</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              }
+                              return null; // Exclude rendering of '_id', 'address', 'propertyDescription', and properties with empty values
+                            }
+                          )
+                        : ""}
+                    </Box>
                   </Box>
-                </Box>
+                ) : (
+                  ""
+                )}
+
+                {propertyDetails &&
+                propertyDetails.amenities &&
+                Object.keys(propertyDetails.amenities)
+                  .filter((key) => key !== "_id") // Exclude _id field
+                  .some((key) => propertyDetails.amenities[key]) ? (
+                  <Box>
+                    <Typography
+                      variant="h6"
+                      style={{ padding: "15px 0" }}
+                      fontWeight={700}
+                    >
+                      Outdoor features
+                    </Typography>
+
+                    <Box
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        marginBottom: "10px",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      {propertyDetails &&
+                        propertyDetails.amenities &&
+                        Object.entries(propertyDetails.amenities).map(
+                          ([category, items], index) => {
+                            if (category.toLowerCase() === "isdelete") {
+                              return null; // Skip rendering the category "isDelete"
+                            }
+
+                            return (
+                              <div
+                                key={index}
+                                style={{ width: "40%", paddingBottom: "15px" }}
+                              >
+                                {(() => {
+                                  const formattedCategory = category
+                                    .split(/(?=[A-Z])/)
+                                    .map(
+                                      (word) =>
+                                        word.charAt(0).toUpperCase() +
+                                        word.slice(1)
+                                    )
+                                    .join(" ");
+                                  return (
+                                    <>
+                                      <Typography
+                                        variant="subtitle1"
+                                        style={{
+                                          fontWeight: 700,
+                                          color: "#555",
+                                          display: "flex",
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        <RadioButtonCheckedIcon
+                                          fontSize="small"
+                                          style={{
+                                            marginRight: "10px",
+                                            color: "gray",
+                                          }}
+                                        />{" "}
+                                        {formattedCategory}
+                                      </Typography>
+                                      {items &&
+                                        items.map((item, itemIndex) => (
+                                          <div style={{ marginLeft: "20px" }}>
+                                            <div key={itemIndex}>
+                                              <div
+                                                style={{
+                                                  display: "flex",
+                                                  justifyContent:
+                                                    "space-between",
+                                                }}
+                                              >
+                                                <div
+                                                  style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                  }}
+                                                >
+                                                  <span
+                                                    style={{
+                                                      marginLeft: "7px",
+                                                    }}
+                                                  >
+                                                    {item}
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        ))}
+                                    </>
+                                  );
+                                })()}
+                              </div>
+                            );
+                          }
+                        )}
+                    </Box>
+                  </Box>
+                ) : (
+                  ""
+                )}
               </Paper>
               <Box style={{ marginTop: "20px" }}>
                 <Paper style={{ padding: "20px" }}>
@@ -605,7 +950,7 @@ export default function SingleProperty() {
                   </Box>
                 </Paper>
               </Box>
-              <Box style={{ marginTop: "20px" }}>
+              {/* <Box style={{ marginTop: "20px" }}>
                 <Paper style={{ padding: "20px" }}>
                   <Typography variant="h6" pb={2} fontWeight={700}>
                     Virtual Tour
@@ -614,25 +959,27 @@ export default function SingleProperty() {
                     {/* <video width="640" height="360" controls>
                       <source src={housevideo} type="video/mp4" />
                     </video> */}
-                    <Image src={house} />
+              {/* <Image src={house} />
                   </Box>
                 </Paper>
-              </Box>
+              </Box>  */}
               <Box style={{ marginTop: "20px" }}>
-                <Paper style={{ padding: "20px" }}>
-                  <Typography variant="h6" pb={2} fontWeight={700}>
-                    Floor plans
-                  </Typography>
-                  <Box>
-                    {/* <video width="640" height="360" controls>
+                {floorUrl && (
+                  <Paper style={{ padding: "20px" }}>
+                    <Typography variant="h6" pb={2} fontWeight={700}>
+                      Floor plans
+                    </Typography>
+                    <Box>
+                      {/* <video width="640" height="360" controls>
                       <source src={housevideo} type="video/mp4" />
                     </video> */}
-                    <Image
-                      src={floorplan}
-                      style={{ width: "100%", height: "430px" }}
-                    />
-                  </Box>
-                </Paper>
+                      <img
+                        src={floorUrl}
+                        style={{ width: "100%", height: "430px" }}
+                      />
+                    </Box>
+                  </Paper>
+                )}
               </Box>
               <Box style={{ marginTop: "20px" }}>
                 <Paper style={{ padding: "20px" }}>
@@ -643,10 +990,19 @@ export default function SingleProperty() {
                     {/* <video width="640" height="360" controls>
                       <source src={housevideo} type="video/mp4" />
                     </video> */}
-                    <Image
+                    {/* <Image
                       src={loaction}
                       style={{ width: "100%", height: "430px" }}
-                    />
+                    /> */}
+                    <iframe
+                      title="Property Location"
+                      height="450"
+                      loading="lazy"
+                      allowFullScreen
+                      frameBorder="0"
+                      src={propertyDetails.googleMapsLink}
+                      style={{ width: "100%" }}
+                    ></iframe>
                   </Box>
                 </Paper>
               </Box>
@@ -696,27 +1052,19 @@ export default function SingleProperty() {
                   <Typography variant="h5" pb={2}>
                     Description
                   </Typography>
-                  <Typography>
-                    Lorem ipsum dolor sit amet, wisi nemore fastidii at vis, eos
-                    equidem admodum disputando ea. An duis dolor appellantur
-                    mea, est id zril nobis appellantur. Ei sea duis senserit
-                    qualisque, te facilisis appellantur pri. Id aperiri aliquam
-                    interesset mel. Contentiones vituperatoribus id est, per
-                    prima nihil scripta no. No semper forensibus adipiscing quo.
-                    Amet deleniti lobortis et eam. In oporteat pertinacia quo,
-                    cu qui antiopam intellegebat, ei alii paulo has. In alia
-                    eros ornatus pri, graeci accusata pericula an vix. His ne
-                    homero dignissim, aliquam dolores scriptorem vis ut. Sit ad
-                    suas adhuc interesset, nec no essent iuvaret adipiscing
-                    everti.
-                  </Typography>
+                  <Typography>{propertyDescription}</Typography>
                 </Paper>
               </Box>
             </Grid>
             <Grid item lg={4} md={4} xs={12}>
               <Box style={{ padding: "0 0 0 20px" }}>
-                <Button variant="contained" style={{ width: "100%" }}>
-                  I am Intrested
+                <Button
+                  variant="contained"
+                  style={{ width: "100%", marginTop: "10px" }}
+                  onClick={AddLead}
+                  disabled={buttonDisabled}
+                >
+                  {buttonText}
                 </Button>
                 <Box
                   style={{

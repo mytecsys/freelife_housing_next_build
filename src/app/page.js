@@ -7,6 +7,10 @@ import SingleProperty from "./(auth)/singleProperty/page";
 import Main from "./components/mainpage/mainpage";
 
 export default function Home() {
+
+
+
+
   return (
     <>
       {/* <HeaderComponent /> */}

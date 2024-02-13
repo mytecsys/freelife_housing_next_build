@@ -18,7 +18,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../components/breadcrumbs/breadcrumbs";
 import BedroomChildOutlinedIcon from "@mui/icons-material/BedroomChildOutlined";
 import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
@@ -27,15 +27,54 @@ import SearchIcon from "@mui/icons-material/Search";
 import Fab from "@mui/material/Fab";
 import HeaderComponent from "@/app/components/HeaderComponent";
 import FooterComponent from "@/app/components/FooterComponet";
+import constant from "@/app/apiconfigurations/Constant";
+import { ApiPostMethodWithToken } from "@/app/apiconfigurations/helper";
+import moment from "moment";
 
 export default function Filter() {
+  // filter page api
 
-// filter page api
+  const [propertyList, setPropertyList] = useState([]);
+  console.log("propertyList state:", propertyList);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("function trigger");
 
+      try {
+        const token = localStorage.getItem("token");
+        const payload = {
+          lookingTo: "Rent",
+        };
+        console.log("payload filter", payload);
 
+        const postUrl = `${constant.baseurl}filter/propertyFilter`; // Replace 'your_api_endpoint_here' with your actual API endpoint
 
+        const response = await ApiPostMethodWithToken(postUrl, payload, token);
 
+        setPropertyList(response.propertyList || []);
+
+        console.log("response filter", response.propertyList);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  //formate the value of rent
+  const formatRent = (rent) => {
+    if (rent >= 100000) {
+      // Convert rent to Lakh (L) format
+      return `${(rent / 100000).toFixed(1)}L`;
+    } else if (rent >= 1000) {
+      // Convert rent to Thousand (k) format
+      return `${(rent / 1000).toFixed(0)}k`;
+    } else {
+      return rent.toString();
+    }
+  };
 
   const options = ["Agent", "Owner", "Builder", "Expert pro agent"];
   const [selectedOption, setSelectedOption] = useState(null);
@@ -137,6 +176,7 @@ export default function Filter() {
     "Less than 10 years",
     "More than 10 years",
   ];
+
   const [selectedAgeProperty, setSelectedAgeProperty] = useState(null);
 
   const handleAgePropertyClick = (option) => {
@@ -151,8 +191,6 @@ export default function Filter() {
   const handlePropertyClick = (option) => {
     setSelectedPropertydetails(option);
   };
-
-  //for build up area
 
   const [value, setValue] = React.useState([1000, 3000]);
 
@@ -220,9 +258,10 @@ export default function Filter() {
   // relevance status
 
   const Relevance = [
-    { label: "Highest-Lowest" },
-    { label: "Lowest-Highest" },
-    { label: "Most Relevance" },
+    { label: "Price- High-Low" },
+    { label: "Price- Low-High" },
+    { label: "Date- Latest-Oldest" },
+    { label: "Date- Oldest-Latest" },
   ];
 
   // for possession status
@@ -289,6 +328,50 @@ export default function Filter() {
       icon: "https://s3-alpha-sig.figma.com/img/bb26/9b11/a69804cfcd572e8cb5b11cf874e177bb?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=FrpHghuzlrzD3Zizkui9TmEQR2loujBXpOOJKJPAkXVaJ5yJd71bYwl6n9lvcHLaygZ0bxCE~EyPUqtCoAWxg6MPfPsWxhxHDnJJd0I12X8Fa0yUBGOtBKbOTWFbCxSGJekdGjlxWn0W0et2ssAhi1cfvB4nf9jEbeyjYWr0c9a1UbJXTVnweMcBpR5CyZncrE16vxyChqW4nOuoHBBYMwoAt3mcHCJLmUD9YWHpPJ4LHs929JqAcVrtDharTObA2-Lc9celqfnUBfyItITOPFx3jiU-I18Vuimouv5PFUKMEEVZJcwnaqxAkda5RD1vl051XECLs9Z3Le3-lGhBYQ__",
     },
   ];
+
+  const [sortOrder, setSortOrder] = useState(""); // Initial sorting order
+
+  // Your property list
+
+  const sortPropertyList = (propertyList, sortOrder) => {
+    return propertyList.slice().sort((a, b) => {
+      const formattedDatea = moment(a.createdAt).format("YYYY-MM-DD");
+      const formattedDateb = moment(a.createdAt).format("YYYY-MM-DD");
+      console.log("formattedDatea--", formattedDatea);
+      console.log("formattedDateb--", formattedDateb);
+      if (sortOrder === "Price- High-Low") {
+        return b.propertyDetails.monthlyRent - a.propertyDetails.monthlyRent;
+      } else if (sortOrder === "Price- Low-High") {
+        return a.propertyDetails.monthlyRent - b.propertyDetails.monthlyRent;
+      } else if (sortOrder === "Date- Latest-Oldest") {
+        const diff = moment(b.createdAt).diff(moment(a.createdAt));
+        if (diff === 0) {
+          // If dates are the same, compare times
+          return moment(b.createdAt).diff(moment(a.createdAt), "milliseconds");
+        }
+        return diff;
+      } else if (sortOrder === "Date- Oldest-Latest") {
+        const diff = moment(a.createdAt).diff(moment(b.createdAt));
+        if (diff === 0) {
+          // If dates are the same, compare times
+          return moment(a.createdAt).diff(moment(b.createdAt), "milliseconds");
+        }
+        return diff;
+      } else {
+        return 0;
+      }
+    });
+  };
+
+  const handleChangeSortOrder = (event, newValue) => {
+    setSortOrder(newValue.label);
+  };
+
+  const sortedPropertyList = sortPropertyList(propertyList, sortOrder);
+
+  useEffect(() => {
+    console.log("Sorted Property List:", sortedPropertyList);
+  }, [sortedPropertyList]);
 
   return (
     <>
@@ -725,7 +808,7 @@ export default function Filter() {
                     alignItems: "end",
                   }}
                 >
-                  <Typography>Showing 1 – 10 of 15 results</Typography>
+                  <Typography>Showing {propertyList.length} results</Typography>
                   <Box style={{ display: "flex", alignItems: "center" }}>
                     <Typography pt={2} R mr={1}>
                       Sort by:
@@ -734,79 +817,93 @@ export default function Filter() {
                       disablePortal
                       id="combo-box-demo"
                       options={Relevance}
+                      onChange={handleChangeSortOrder} // Handle change in sorting order
+                      getOptionLabel={(option) => option.label}
                       sx={{ width: 200, height: "20px" }}
                       renderInput={(params) => (
-                        <TextField {...params} label="Relevance" size="small" />
+                        <TextField {...params} label="Sort by" size="small" />
                       )}
                     />
                   </Box>
                 </Box>
                 <Grid container spacing={3} style={{ marginTop: "20px" }}>
-                  {images.map((step, index) => (
-                    <Grid item key={index} lg={6} md={6} sm={6} xs={12}>
-                      <Card style={{ marginRight: "10px" }}>
-                        {/* Your Card Content */}
-                        <div style={{ position: "relative" }}>
-                          <Box
-                            component="img"
-                            sx={{
-                              height: 170,
-                              display: "block",
-                              maxWidth: 400,
-                              overflow: "hidden",
-                              width: "100%",
-                            }}
-                            src={step.imgPath}
-                            alt={step.label}
-                          />
-                          <Avatar
-                            src={step.icon}
-                            style={{
-                              position: "absolute",
-                              top: "4%",
-                              right: "6%",
-                            }}
-                          />
-                          <Box style={{ padding: "10px" }}>
-                            <Typography variant="h6" fontWeight={500}>
-                              {step.range}
-                            </Typography>
-                            <Typography variant="p" mt={1}>
-                              {step.location}
-                            </Typography>
+                  {sortedPropertyList.map((step, index) => {
+                    const indianBathrooms =
+                      step.propertyDetails.bathroom.indians || 0;
+                    const westernBathrooms =
+                      step.propertyDetails.bathroom.western || 0;
+                    const totalBathrooms = indianBathrooms + westernBathrooms;
+
+                    return (
+                      <Grid item key={index} lg={6} md={6} sm={6} xs={12}>
+                        <Card style={{ marginRight: "10px" }}>
+                          {/* Your Card Content */}
+                          <div style={{ position: "relative" }}>
                             <Box
-                              style={{
-                                display: "flex",
-                                marginTop: "10px",
+                              component="img"
+                              sx={{
+                                height: 170,
+                                display: "block",
+                                maxWidth: 400,
+                                overflow: "hidden",
+                                width: "100%",
                               }}
-                            >
-                              <Box style={{ display: "flex" }}>
-                                <BedroomChildOutlinedIcon
-                                  style={{ color: "gray" }}
-                                />{" "}
-                                <span style={{ marginLeft: "5px" }}>
-                                  {step.bedroomtext}
-                                </span>
-                              </Box>
+                              src={
+                                step.imageArray && step.imageArray.length > 0
+                                  ? step.imageArray[0]
+                                  : ""
+                              }
+                              // alt={step.label}
+                            />
+                            <Avatar
+                              // src={step.icon}
+                              style={{
+                                position: "absolute",
+                                top: "4%",
+                                right: "6%",
+                              }}
+                            />
+                            <Box style={{ padding: "10px" }}>
+                              <Typography variant="h6" fontWeight={600}>
+                                ₹{formatRent(step.propertyDetails.monthlyRent)}
+                              </Typography>
+                              <Typography variant="p" mt={1}>
+                                {step.location}
+                              </Typography>
                               <Box
                                 style={{
                                   display: "flex",
-                                  marginLeft: "20px",
+                                  marginTop: "10px",
                                 }}
                               >
-                                <BathtubOutlinedIcon
-                                  style={{ color: "gray" }}
-                                />{" "}
-                                <span style={{ marginLeft: "5px" }}>
-                                  {step.bathroomtext}
-                                </span>
+                                <Box style={{ display: "flex" }}>
+                                  <BedroomChildOutlinedIcon
+                                    style={{ color: "gray" }}
+                                  />{" "}
+                                  <span style={{ marginLeft: "5px" }}>
+                                    {step.propertyDetails.bhk}
+                                  </span>
+                                </Box>
+                                <Box
+                                  style={{
+                                    display: "flex",
+                                    marginLeft: "20px",
+                                  }}
+                                >
+                                  <BathtubOutlinedIcon
+                                    style={{ color: "gray" }}
+                                  />{" "}
+                                  <span style={{ marginLeft: "5px" }}>
+                                    {totalBathrooms}
+                                  </span>
+                                </Box>
                               </Box>
                             </Box>
-                          </Box>
-                        </div>
-                      </Card>
-                    </Grid>
-                  ))}
+                          </div>
+                        </Card>
+                      </Grid>
+                    );
+                  })}
                 </Grid>
               </Grid>
             </Grid>

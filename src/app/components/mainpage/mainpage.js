@@ -13,6 +13,10 @@ import {
   CardContent,
   Paper,
   CardActions,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import backgroundimage from "../mainpage/mainpagebackground.png";
 import sideimage from "../mainpage/mainpageside.png";
@@ -158,6 +162,29 @@ const Main = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     adaptiveHeight: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
   const bestproperty = {
     dots: true,
@@ -165,6 +192,29 @@ const Main = () => {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   const FeaturedDevelopers = [
@@ -234,14 +284,14 @@ const Main = () => {
               the best quality. Only available on Real Estate.
             </Typography>
 
-            <Box display="flex" mb={2}>
-              <Button
+            <Box display="flex" mb={2} style={{ flexWrap: "wrap" }}>
+              {/* <Button
                 className="mainpagebutton"
                 style={{ background: "#0066ab1a", color: "#0066AB" }}
               >
                 Buy
               </Button>
-              <Button className="mainpagebutton">Rent</Button>
+              <Button className="mainpagebutton">Rent</Button> */}
               <Button className="mainpagebutton">Commercial</Button>
               <Button className="mainpagebutton">PG/Co-Living</Button>
               <Button className="mainpagebutton">Plots</Button>
@@ -249,7 +299,7 @@ const Main = () => {
 
             <Box className="outerwrap">
               <Grid container style={{ display: "flex", alignItems: "center" }}>
-                <Grid item lg={3} md={3} xs={3}>
+                <Grid item lg={2} md={2} xs={2}>
                   <Select
                     value={selectedCity}
                     onChange={handleCityChange}
@@ -261,7 +311,7 @@ const Main = () => {
                     }}
                   >
                     <MenuItem value="" disabled>
-                      Choose a city
+                      City
                     </MenuItem>
                     {indianCities.map((city) => (
                       <MenuItem key={city} value={city}>
@@ -270,7 +320,7 @@ const Main = () => {
                     ))}
                   </Select>
                 </Grid>
-                <Grid item lg={7} md={7} xs={7}>
+                <Grid item lg={5} md={5} xs={5}>
                   <input
                     placeholder="Search for locality, landmark, project or builder"
                     style={{
@@ -280,6 +330,33 @@ const Main = () => {
                       outline: "0",
                     }}
                   />
+                </Grid>
+                <Grid
+                  item
+                  lg={3}
+                  md={3}
+                  xs={3}
+                  display={"flex"}
+                  justifyContent={"end"}
+                >
+                  <FormControl>
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-row-radio-buttons-group-label"
+                      name="row-radio-buttons-group"
+                    >
+                      <FormControlLabel
+                        value="buy"
+                        control={<Radio />}
+                        label="Buy"
+                      />
+                      <FormControlLabel
+                        value="rent"
+                        control={<Radio />}
+                        label="Rent"
+                      />
+                    </RadioGroup>
+                  </FormControl>
                 </Grid>
                 <Grid item lg={2} md={2} xs={2}>
                   <Button
@@ -318,6 +395,7 @@ const Main = () => {
                       background: "#F5F5F5",
                       padding: "7px",
                       marginLeft: "10px",
+                      marginBottom: "10px",
                       borderRadius: "3px",
                     }}
                   >
@@ -911,7 +989,9 @@ const Main = () => {
               </Typography>
             </Box>
           </Box>
-          <Grid container>{/* <ImageGallary /> */}</Grid>
+          <Grid container marginTop={"30px"}>
+            <ImageGallary />
+          </Grid>
         </Box>
 
         <Box marginTop={4} style={{ width: "100%" }}>
