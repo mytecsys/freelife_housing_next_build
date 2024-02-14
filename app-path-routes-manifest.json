@@ -1,1 +1,1 @@
-{"/_not-found":"/_not-found","/(auth)/loginpage/page":"/loginpage","/(auth)/registerpage/page":"/registerpage","/(auth)/singleProperty/page":"/singleProperty","/favicon.ico/route":"/favicon.ico","/page":"/"}
+{"/_not-found":"/_not-found","/(auth)/filterpage/page":"/filterpage","/page":"/","/favicon.ico/route":"/favicon.ico","/(auth)/singleProperty/page":"/singleProperty","/(auth)/loginpage/page":"/loginpage","/(auth)/registerpage/page":"/registerpage"}
