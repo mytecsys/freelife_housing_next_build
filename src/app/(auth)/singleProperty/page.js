@@ -33,23 +33,25 @@ import { useSearchParams } from "next/navigation";
 export default function SingleProperty() {
   const searchParams = useSearchParams();
 
-  const search = searchParams.get("property_id");
-  console.log("search", search);
-
-  localStorage.getItem("token");
-  // api call single property
+  const propertyId = searchParams.get("property_id");
+  // const propertyId = window.location.search;
+  console.log("search---", propertyId);
 
   const [propertyDetails, setPropertyDetails] = useState([]);
   console.log("propertyDetails--", propertyDetails);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       console.log("function trigger");
+      setIsLoading(true); // Indicate loading state
+      setError(null); // Clear any previous errors
 
       try {
         const token = localStorage.getItem("token");
         const payload = {
-          property_id: search,
+          property_id: propertyId,
         };
         console.log("payload", payload);
 
@@ -64,7 +66,7 @@ export default function SingleProperty() {
     };
 
     fetchData();
-  }, []);
+  }, [propertyId]);
 
   const [buttonText, setButtonText] = useState("I am intreseted");
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -76,7 +78,7 @@ export default function SingleProperty() {
       const token = localStorage.getItem("token");
       const payload = {
         user_id: propertyDetails.user_id,
-        property_id: search,
+        property_id: propertyId,
         owner_id: propertyDetails._id,
       };
       console.log("response lead payload", payload);
@@ -388,10 +390,12 @@ export default function SingleProperty() {
     height: "150px",
     cursor: "pointer",
     border: "2px solid transparent", // Default border style for thumbnails
+    borderRadius: "5px",
   };
 
   const selectedThumbnailStyle = {
     border: "2px solid blue", // Highlight style for selected thumbnail
+    borderRadius: "5px",
   };
 
   const formatRent = (rent) => {
@@ -420,6 +424,7 @@ export default function SingleProperty() {
 
   return (
     <>
+      {/* <Suspense fallback={<div>Loading search data...</div>}> */}
       <HeaderComponent />
       <Box style={{ marginTop: "100px", padding: "30px", color: "#535353" }}>
         <Breadcrumb />
@@ -499,7 +504,11 @@ export default function SingleProperty() {
                       <img
                         src={image}
                         alt={`Slider Image ${index + 1}`}
-                        style={{ width: "100%", height: "450px" }}
+                        style={{
+                          width: "100%",
+                          height: "450px",
+                          borderRadius: "4px",
+                        }}
                       />
                     </Box>
                   ))}
@@ -507,7 +516,7 @@ export default function SingleProperty() {
             </Grid>
 
             {/* Thumbnails */}
-            {/* <Grid container item spacing={3} lg={12}>
+            <Grid container item spacing={3} lg={12}>
               {propertyDetails &&
                 propertyDetails?.imageArray?.map((image, index) => (
                   <Grid
@@ -532,30 +541,29 @@ export default function SingleProperty() {
                     />
                   </Grid>
                 ))}
-            </Grid> */}
-            <Grid container item spacing={3} lg={12}>
-              <Grid item lg={12} className="ThumbnailSlider">
-                <Slider {...thumbnailSliderSettings}>
-                  {propertyDetails &&
-                    propertyDetails?.imageArray?.map((image, index) => (
-                      <Grid item key={index}>
-                        <img
-                          src={image}
-                          alt={`Thumbnail Image ${index + 1}`}
-                          // style={thumbnailStyle}
-                          style={{
-                            ...thumbnailStyle,
-                            ...(selectedImageIndex === index
-                              ? selectedThumbnailStyle
-                              : {}),
-                          }}
-                          // Change slide when thumbnail is clicked
-                        />
-                      </Grid>
-                    ))}
-                </Slider>
-              </Grid>
             </Grid>
+
+            {/* <Grid item lg={12} className="ThumbnailSlider">
+              <Slider {...thumbnailSliderSettings}>
+                {propertyDetails &&
+                  propertyDetails?.imageArray?.map((image, index) => (
+                    <div key={index}>
+                      <img
+                        src={image}
+                        alt={`Thumbnail Image ${index + 1}`}
+                        // style={thumbnailStyle}
+                        style={{
+                          ...thumbnailStyle,
+                          ...(selectedImageIndex === index
+                            ? selectedThumbnailStyle
+                            : {}),
+                        }}
+                        // Change slide when thumbnail is clicked
+                      />
+                    </div>
+                  ))}
+              </Slider>
+            </Grid> */}
           </Grid>
         </Box>
         <Box style={{ marginTop: "40px" }}>
@@ -853,7 +861,10 @@ export default function SingleProperty() {
                             return (
                               <div
                                 key={index}
-                                style={{ width: "40%", paddingBottom: "15px" }}
+                                style={{
+                                  width: "40%",
+                                  paddingBottom: "15px",
+                                }}
                               >
                                 {(() => {
                                   const formattedCategory = category
@@ -1189,6 +1200,7 @@ export default function SingleProperty() {
         </Box>
       </Box>
       <FooterComponent />
+      {/* </Suspense> */}
     </>
   );
 }

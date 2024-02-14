@@ -7,6 +7,12 @@ const nextConfig = {
   images: {
     domains: ["images.pexels.com", "images.unsplash.com"],
   },
+  env: {
+    DB_HOST: "localhost",
+  },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.module.rules.push({
