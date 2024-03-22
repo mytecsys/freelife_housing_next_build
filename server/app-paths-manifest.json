@@ -1,13 +1,13 @@
 {
   "/_not-found": "app/_not-found.js",
-  "/(auth)/blog/page": "app/(auth)/blog/page.js",
-  "/(auth)/registerpage/page": "app/(auth)/registerpage/page.js",
   "/(auth)/filterpage/page": "app/(auth)/filterpage/page.js",
-  "/(auth)/viewAllBlog/page": "app/(auth)/viewAllBlog/page.js",
+  "/(auth)/blog/page": "app/(auth)/blog/page.js",
   "/(auth)/loginpage/page": "app/(auth)/loginpage/page.js",
-  "/page": "app/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/(auth)/userstorage/page": "app/(auth)/userstorage/page.js",
   "/(auth)/singleProperty/page": "app/(auth)/singleProperty/page.js",
+  "/(auth)/registerpage/page": "app/(auth)/registerpage/page.js",
+  "/(auth)/userstorage/page": "app/(auth)/userstorage/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/(auth)/viewAllBlog/page": "app/(auth)/viewAllBlog/page.js",
   "/(auth)/wishlistProperty/page": "app/(auth)/wishlistProperty/page.js"
 }
