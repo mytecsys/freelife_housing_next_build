@@ -1,4 +1,4 @@
-// File: D:\freelifecopy\freelifehousing\freelifehousing\src\app\(auth)\loginpage\page.js
+// File: C:\Users\S. comp\Desktop\NextApp2\freelife_housing_next\src\app\(auth)\loginpage\page.js
 import * as entry from '../../../../../src/app/(auth)/loginpage/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
