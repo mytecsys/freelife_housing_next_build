@@ -1,14 +1,14 @@
 {
   "/_not-found": "app/_not-found.js",
+  "/(auth)/loginpage/page": "app/(auth)/loginpage/page.js",
   "/(auth)/blog/page": "app/(auth)/blog/page.js",
   "/(auth)/filterpage/page": "app/(auth)/filterpage/page.js",
-  "/(auth)/loginpage/page": "app/(auth)/loginpage/page.js",
   "/(auth)/property/page": "app/(auth)/property/page.js",
   "/(auth)/registerpage/page": "app/(auth)/registerpage/page.js",
+  "/(auth)/viewAllBlog/page": "app/(auth)/viewAllBlog/page.js",
   "/(auth)/userstorage/page": "app/(auth)/userstorage/page.js",
   "/(auth)/viewSingleBlog/page": "app/(auth)/viewSingleBlog/page.js",
   "/(auth)/wishlistProperty/page": "app/(auth)/wishlistProperty/page.js",
-  "/(auth)/viewAllBlog/page": "app/(auth)/viewAllBlog/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js"
 }
