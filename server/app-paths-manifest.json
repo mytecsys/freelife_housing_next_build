@@ -8,7 +8,7 @@
   "/(auth)/userstorage/page": "app/(auth)/userstorage/page.js",
   "/(auth)/viewAllBlog/page": "app/(auth)/viewAllBlog/page.js",
   "/(auth)/viewSingleBlog/page": "app/(auth)/viewSingleBlog/page.js",
-  "/(auth)/wishlistProperty/page": "app/(auth)/wishlistProperty/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/(auth)/wishlistProperty/page": "app/(auth)/wishlistProperty/page.js",
   "/page": "app/page.js"
 }
