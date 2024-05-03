@@ -9,6 +9,6 @@
   "/(auth)/viewAllBlog/page": "app/(auth)/viewAllBlog/page.js",
   "/(auth)/viewSingleBlog/page": "app/(auth)/viewSingleBlog/page.js",
   "/(auth)/wishlistProperty/page": "app/(auth)/wishlistProperty/page.js",
-  "/page": "app/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js"
 }
