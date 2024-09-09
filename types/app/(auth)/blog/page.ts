@@ -1,4 +1,4 @@
-// File: C:\Users\S. comp\Desktop\NextApp2\freelife_housing_next\src\app\(auth)\blog\page.js
+// File: C:\Users\Sohel Sheikh\Downloads\workProjects\freelife_housing_next\src\app\(auth)\blog\page.js
 import * as entry from '../../../../../src/app/(auth)/blog/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
