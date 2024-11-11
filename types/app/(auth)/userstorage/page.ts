@@ -1,4 +1,4 @@
-// File: C:\Users\sheik\OneDrive\Documents\MtsProjects\freelife_housing_next\src\app\(auth)\userstorage\page.js
+// File: C:\Users\sheik\MtsProjects\freelife_housing_next\src\app\(auth)\userstorage\page.js
 import * as entry from '../../../../../src/app/(auth)/userstorage/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -1,4 +1,4 @@
-// File: C:\Users\sheik\OneDrive\Documents\MtsProjects\freelife_housing_next\src\app\(auth)\wishlistProperty\page.js
+// File: C:\Users\sheik\MtsProjects\freelife_housing_next\src\app\(auth)\wishlistProperty\page.js
 import * as entry from '../../../../../src/app/(auth)/wishlistProperty/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
